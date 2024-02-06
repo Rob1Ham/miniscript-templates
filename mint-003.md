@@ -93,6 +93,14 @@ Layer is used as an abstraction to segement the different eligible spending cond
 | Scenario 8        | ✅      |        | ✅      | ✅       |         | ✅       |
 | Scenario 9        |        | ✅      | ✅      | ✅       |         | ✅       |
 
+AND
+
+| Valid Spending Scenario | $PAK_1$ | $PAK_2$ | $PAK_3$ |
+|:-----------------------:|:-------:|:-------:|:-------:|
+| Scenario A              | ✅       | ✅       |         |
+| Scenario B              | ✅       |         | ✅       |
+| Scenario C              |         | ✅       | ✅       |
+
 
 #### Layer 2
 
@@ -109,6 +117,8 @@ Layer is used as an abstraction to segement the different eligible spending cond
 | Scenario 1        | ✅        | ✅        |         | ✅        | Yes          | 
 | Scenario 2        | ✅        |          | ✅        | ✅        | Yes          |
 | Scenario 3        |          | ✅        | ✅        | ✅        | Yes          |
+
+AND
 
 
 
