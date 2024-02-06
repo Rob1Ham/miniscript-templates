@@ -97,9 +97,9 @@ AND
 
 | Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `smallest_epoch_timestamp` |
 |-------------------|:--------:|:--------:|:--------:|:--------:|:------------:|
-| Scenario 1        | ✅        | ✅        |         | ✅        | Yes          | 
-| Scenario 2        | ✅        |          | ✅        | ✅        | Yes          |
-| Scenario 3        |          | ✅        | ✅        | ✅        | Yes          |
+| Scenario 1        | ✅        | ✅        |         | ✅        | ✅          | 
+| Scenario 2        | ✅        |          | ✅        | ✅        | ✅          |
+| Scenario 3        |          | ✅        | ✅        | ✅        | ✅          |
 
 
 #### Layer 3:
@@ -113,9 +113,9 @@ AND
 
 | Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `between_epoch_timestamp` |
 |-------------------|:--------:|:--------:|:--------:|:--------:|:----------------------------------------------:|
-| Scenario 1        | ✅        |          |          | ✅        | Yes                                            | 
-| Scenario 2        |          | ✅        |          | ✅        | Yes                                            |
-| Scenario 3        |          |          | ✅        | ✅        | Yes                                            |
+| Scenario 1        | ✅        |          |          | ✅        | ✅                                            | 
+| Scenario 2        |          | ✅        |          | ✅        | ✅                                            |
+| Scenario 3        |          |          | ✅        | ✅        | ✅                                            |
 
 
 #### Layer 4:
@@ -127,9 +127,9 @@ AND
 
 | Spending Scenario | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `largest_epoch_timestamp` |
 |-------------------|:------:|:------:|:------:|:------------:|
-| Scenario 1        | ✅      | ✅      |        | Yes          |
-| Scenario 2        | ✅      |        | ✅      | Yes          |
-| Scenario 3        |        | ✅      | ✅      | Yes          |
+| Scenario 1        | ✅      | ✅      |        | ✅          |
+| Scenario 2        | ✅      |        | ✅      | ✅          |
+| Scenario 3        |        | ✅      | ✅      | ✅          |
 
 
 ---
