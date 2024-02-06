@@ -83,15 +83,15 @@ Layer is used as an abstraction to segement the different eligible spending cond
 
 | Spending Scenario | $PK_1$ | $PK_2$ | $PK_3$ | $PAK_1$ | $PAK_2$ | $PAK_3$ |
 |-------------------|:------:|:------:|:------:|:-------:|:-------:|:-------:|
-| Scenario 1        | ✔️     | ✔️     |        | ✔️      | ✔️      |         |
-| Scenario 2        | ✔️     |        | ✔️     | ✔️      | ✔️      |         |
-| Scenario 3        | ✔️     | ✔️     |        |         | ✔️      | ✔️      |
-| Scenario 4        |        | ✔️     | ✔️     | ✔️      | ✔️      |         |
-| Scenario 5        | ✔️     |        | ✔️     |         | ✔️      | ✔️      |
-| Scenario 6        |        | ✔️     | ✔️     |         | ✔️      | ✔️      |
-| Scenario 7        | ✔️     | ✔️     |        | ✔️      |         | ✔️      |
-| Scenario 8        | ✔️     |        | ✔️     | ✔️      |         | ✔️      |
-| Scenario 9        |        | ✔️     | ✔️     | ✔️      |         | ✔️      |
+| Scenario 1        | ✅      | ✅      |        | ✅       | ✅       |         |
+| Scenario 2        | ✅      |        | ✅      | ✅       | ✅       |         |
+| Scenario 3        | ✅      | ✅      |        |         | ✅       | ✅       |
+| Scenario 4        |        | ✅      | ✅      | ✅       | ✅       |         |
+| Scenario 5        | ✅      |        | ✅      |         | ✅       | ✅       |
+| Scenario 6        |        | ✅      | ✅      |         | ✅       | ✅       |
+| Scenario 7        | ✅      | ✅      |        | ✅       |         | ✅       |
+| Scenario 8        | ✅      |        | ✅      | ✅       |         | ✅       |
+| Scenario 9        |        | ✅      | ✅      | ✅       |         | ✅       |
 
 
 #### Layer 2
@@ -106,9 +106,9 @@ Layer is used as an abstraction to segement the different eligible spending cond
 
 | Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `smaller_epoch_timestamp` |
 |-------------------|:--------:|:--------:|:--------:|:--------:|:------------:|
-| Scenario 1        | ✔️       | ✔️       |         | ✔️       | Yes          | 
-| Scenario 2        | ✔️       |          | ✔️       | ✔️       | Yes          |
-| Scenario 3        |          | ✔️       | ✔️       | ✔️       | Yes          |
+| Scenario 1        | ✅        | ✅        |         | ✅        | Yes          | 
+| Scenario 2        | ✅        |          | ✅        | ✅        | Yes          |
+| Scenario 3        |          | ✅        | ✅        | ✅        | Yes          |
 
 
 
@@ -126,9 +126,9 @@ Layer is used as an abstraction to segement the different eligible spending cond
 
 | Spending Scenario | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `larger_epoch_timestamp` |
 |-------------------|:------:|:------:|:------:|:------------:|
-| Scenario 1        | ✔️     | ✔️     |        | Yes          |
-| Scenario 2        | ✔️     |        | ✔️     | Yes          |
-| Scenario 3        |        | ✔️     | ✔️     | Yes          |
+| Scenario 1        | ✅      | ✅      |        | Yes          |
+| Scenario 2        | ✅      |        | ✅      | Yes          |
+| Scenario 3        |        | ✅      | ✅      | Yes          |
 
 
 ---
