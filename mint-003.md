@@ -10,40 +10,21 @@ This introduces a concept of "Negative Control" where, by default, funds are not
 
 In the event the principle loses access to all of their keys, a secondary agent is available to work with the primary agent such that funds can be recovered after a set period of time.
 
+In the unlikely event the Primary agent has lost 2 of their 3 keys, a timelock enables only 1 of 3 keys from the primary agent to be signed with the secondary agent.
+
 Finally, in the event the principle no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the principle, or their own delegated managers of the recovery keys.
-
-
-<!--
-
-REVISIT
-
- ### 2 Layer Conditions to be satisfied using:
-
-#### Base expressions (type B).
-
-##### timelock: **relative** or **absolute** [^timelock] [^either]
-
-- **older(**int**)** [^older]
-
-- **after(**int**)** [^after] 
-
-#### Key expressions[^k_type] (type K).
-
-- **pk(**$Key_1$**)**
-
-- **pk(**$Key_2$**)**
-
-- **pk(**$Key_3$**)** -->
 
 
 
 ### More on Timelock Values
 
-- There are two timelocks used for this MinT:
+- There are three timelocks used for this MinT:
 
-1. `smaller_epoch_timestamp` - The lower valued timelock is to signify the "recovery period" where the principle has lost access to 2 of their keys, and would like to use the secondary agent as a recovery partner to gain access to the funds.
+1. `smallest_epoch_timestamp` - The lower valued timelock is to signify the "recovery period" where the principle has lost access to 2 of their keys, and would like to use the secondary agent as a recovery partner to gain access to the funds.
 
-2. `larger_epoch_timestamp` - The greater valued timelock, signifying the expiration of the contract, where the principle is able to unilaterally withdraw their bitcoin from the joint custody vault.
+2. `between_epoch_timestamp` - In between the two timestamps, this timestamp enables the difference between Layer 2 recovery layer and layer 3 recovery layer.
+
+3. `largest_epoch_timestamp` - The greater valued timelock, signifying the expiration of the contract, where the principle is able to unilaterally withdraw their bitcoin from the joint custody vault.
 
 ### Keys
 
@@ -53,7 +34,7 @@ In total, there are 10 keys in use for the 3 Key Joint Custody Vault, they are a
 |:--|:--:|:--:|
 |Principle Keys 1,2,3 |These keys belong to the owner of the Bitcoin. They are used as the default keys the principle uses to transact bitcoin for the length of the relationship with the agent in the Joint Custody vault. | $PK_1$, $PK_2$, $PK_3$|
 |Primary Agent Keys 1,2,3 |These keys belong to the agent, who the principle has engaged with to fascilitate the securing of Bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$|
-|Secondary Agent Key |This key is held by a 3rd party unassoicated with the other keys, in the event the principle has lost a majority of their keys, can sign transactions with the primary agent to move funds after a designated "Recovery Period" has started. | $SAK _1$ |
+|Secondary Agent Key |This key is held by a 3rd party unassoicated with the other keys, in the event the principle has lost a majority of their keys, can sign transactions with the primary agent to move funds after a designated "Recovery Period" has started. | $SAK$ |
 |Recovery Keys 1,2,3 |These keys in practice belong to the principle, they may even be keys related to the Principle Keys with a different derivation path, but can also be delegated key holders. After the initial joint custody vault agreement has ended, and the Recovery Period has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
 
 
@@ -65,11 +46,13 @@ Below is a reference diagram on how the 3 Key Joint Custody operates across time
 
 Layer is used as an abstraction to segement the different eligible spending conditions, going in an ascending order of timelock values. At the start, only "Layer 1" is accessible for spending funds, over time, other spending conditions become available, but this does not restrict the ability to spend from a proceeding layer.
 
-| Layer | Layer Name              | Key Set 1                            | Condition Between Sets | Key Set 2                | Timelock Condition | Timelock                      |
-|:-----:|:-----------------------:|:------------------------------------:|:----------------------:|:------------------------:|:------------------:|:------------------------------:|
-| 1     | Default Spending Path   | $PK_1$, $PK_2$, $PK_3$ (2 of 3)      | AND                    | $_PAK_1$, $_PAK_2$, $_PAK_3$ | N/A              | None                          |
-| 2     | Emergency Recovery Path | $_PAK_1$, $_PAK_2$, $_PAK_3$         | AND                    | $_SAK_1$                 | AND               | After (`smaller_epoch_timestamp`) |
-| 3     | Sovereign Recovery Path | $RK_1$, $RK_2$, $RK_3$               | None                   | None                    | AND               | After (`larger_epoch_timestamp`)  |
+| Layer | Layer Name                | Key Set 1                      | Condition Between Sets | Key Set 2          | Timelock Condition | Timelock                        |
+|:-----:|:-------------------------:|:------------------------------:|:----------------------:|:------------------:|:------------------:|:-------------------------------:|
+| 1     | Default Spending Path     | $PK_1$, $PK_2$, $PK_3$ (2 of 3)| AND                    | $PAK_1$, $PAK_2$, $PAK_3$ | N/A            | None                            |
+| 2     | Asset Recovery Path   | $PAK_1$, $PAK_2$, $PAK_3$      | AND                    | $SAK$           | AND               | After (`smallest_epoch_timestamp`) |
+| 3     | Emergency Recovery Path    | $PAK_1$, $PAK_2$, $PAK_3$ (1 of 3)| AND                 | $SAK$           | N/A               | After (`between_epoch_timestamp`)                            |
+| 4     | Sovereign Recovery Path   | $RK_1$, $RK_2$, $RK_3$, $RK_4$, $RK_5$ (3 of 5)| None | None              | AND               | After (`largest_epoch_timestamp`)  |
+
 
 
 ### Layer 1
@@ -104,7 +87,7 @@ AND
 
 #### Layer 2
 
-| Emergency Recovery Path | $PAK_1$ | $PAK_2$ | $PAK_3$ | $SAK_1$ | BIP-113 greater than `smaller_epoch_timestamp` |
+| Emergency Recovery Path | $PAK_1$ | $PAK_2$ | $PAK_3$ | $SAK$ | BIP-113 greater than `smallest_epoch_timestamp` |
 |:-----------------------:|:-------:|:-------:|:-------:|:-------:|:--------:|
 | 2 of 3 PAKs AND SAK1 after Timelock | ![PAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![SAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
 
@@ -112,29 +95,37 @@ AND
 
 ##### Valid Layer 2 Spend Conditions
 
-| Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `smaller_epoch_timestamp` |
+| Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `smallest_epoch_timestamp` |
 |-------------------|:--------:|:--------:|:--------:|:--------:|:------------:|
 | Scenario 1        | ✅        | ✅        |         | ✅        | Yes          | 
 | Scenario 2        | ✅        |          | ✅        | ✅        | Yes          |
 | Scenario 3        |          | ✅        | ✅        | ✅        | Yes          |
 
-AND
-
-
-
----
-
-
-
 
 #### Layer 3:
-| Sovereign Recovery Path | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `larger_epoch_timestamp` |
-|:-----------------------:|:------:|:------:|:------:|:-------:|
-| 3 of 3 RKs AND Timelock | ![RK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![RK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![RK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
+
+| Emergency Recovery Path | $PAK_1$ | $PAK_2$ | $PAK_3$ | $SAK$ | BIP-113 greater than `between_epoch_timestamp` |
+|:-----------------------:|:-------:|:-------:|:-------:|:-------:|:-----------------------------------------------:|
+| 1 of 3 PAKs AND SAK1 after Timelock | ![PAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![SAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
+
 
 ##### Valid Layer 3 Spend Conditions
 
-| Spending Scenario | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `larger_epoch_timestamp` |
+| Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `between_epoch_timestamp` |
+|-------------------|:--------:|:--------:|:--------:|:--------:|:----------------------------------------------:|
+| Scenario 1        | ✅        |          |          | ✅        | Yes                                            | 
+| Scenario 2        |          | ✅        |          | ✅        | Yes                                            |
+| Scenario 3        |          |          | ✅        | ✅        | Yes                                            |
+
+
+#### Layer 4:
+| Sovereign Recovery Path | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `largest_epoch_timestamp` |
+|:-----------------------:|:------:|:------:|:------:|:-------:|
+| 3 of 3 RKs AND Timelock | ![RK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![RK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![RK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
+
+##### Valid Layer 4 Spend Conditions
+
+| Spending Scenario | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `largest_epoch_timestamp` |
 |-------------------|:------:|:------:|:------:|:------------:|
 | Scenario 1        | ✅      | ✅      |        | Yes          |
 | Scenario 2        | ✅      |        | ✅      | Yes          |
@@ -145,14 +136,14 @@ AND
 
 # Example Miniscript Output Descriptor
 
-For this example, the `smaller_epoch_timestamp` is: 1672531200 (Jan 1 2023, midnight gmt) and `larger_epoch_timestamp` is: 1675209600 (Feb 1 2023, midnight gmt)
+For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, midnight gmt), the `between_epoch_timestamp` is: 1673740800 and `largest_epoch_timestamp` is: 1675209600 (Feb 1 2023, midnight gmt)
 
 - MINT-003 Output Descriptor: 
-<code>wsh(andor(multi(2,$PAK_1$,$PAK_2$,$PAK_3$),or_d(multi(2,$PK_1$,$PK_2$,$PK_3$),and_v(v:pkh($),after(`smaller_epoch_timestamp`))),and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$),after(`larger_epoch_timestamp`))))</code>
+<code>wsh(or_i(and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`largest_epoch_timestamp`)),and_v(v:thresh(2,pk($PAK_1$),s:pk($PAK_2$),s:pk($PAK_3$),snl:after(`between_epoch_timestamp`)),or_d(multi(2,$PK_1$,$PK_2$,$PK_3$),and_v(v:pkh($SAK$),after(`smallest_epoch_timestamp`))))))</code>
 
 
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
-<code>or(99@and(thresh(2,pk($AGENT_1_XPUB),pk($AGENT_2_XPUB),pk($AGENT_3_XPUB)),or(99@thresh(2,pk($PRINCIPLE_1_XPUB),pk($PRINCIPLE_2_XPUB),pk($PRINCIPLE_3_XPUB)),and(pk($SECONDARY_AGENT_1_XPUB),after(1672531200)))),and(thresh(2,pk($RECOVERY_1_XPUB),pk($RECOVERY_2_XPUB),pk($RECOVERY_3_XPUB)),after(1675209600)))</code>
+<code>or(99@and(thresh(2,pk($PAK_1$),pk($PAK_2$),pk($PAK_3$),after(`between_epoch_timestamp`)),or(99@thresh(2,pk($PK_1$),pk($PK_2$),pk($PK_3$)),and(pk($SAK$),after(`smallest_epoch_timestamp`)))),and(thresh(2,pk(Recovery1),pk(Recovery2),pk(Recovery3)),after(`largest_epoch_timestamp`)))</code>
 
 
 ## Layer 1 Example Spend
@@ -160,20 +151,23 @@ For this example, the `smaller_epoch_timestamp` is: 1672531200 (Jan 1 2023, midn
 Signed by: $PK_1$, $PK_2$, $PAK_1$, $PAK_2$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/4977152a5e1a07861c40d159513cb7888d06b5591ce8903e1145eafd284777f1)
+Transaction](https://mempool.space/testnet/tx/fd6c7da5c6febee5f41a9ce163e9be152d942e66755f9a9b2e4e86954d66aa13)
 
 ## Layer 2 Example Spend 
 
 Signed by: $PK_1$, $PK_2$, $SAK$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/6a35bcf91dc2d12ec286e9a3a47a3cf4998938050f86aee4f3175799c624f1ca)
+Transaction](https://mempool.space/testnet/tx/312325147d5f7721900c51e80d7d216cbe5205591b5fd737f1aab22f95d4dfbe)
 
 ## Layer 3 Example Spend
+
+[Reference Testnet
+Transaction](https://mempool.space/testnet/tx/3bb995a053c8f82740b6f2d824c6bb0d34c5af5bfa0d68940151eba111db2284)
+
+## Layer 4 Example Spend
 
 Signed by: $RK_1$, $RK_2$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/4d829311422ff286dce42bde0f3c979c46680e696e625d94dfa5be45d8a4cb27)
-
-
+Transaction](https://mempool.space/testnet/tx/e10e6e3b1469caa2caf1408669e2b85bca39e3445ff3de657bdc93a8ea195462)
