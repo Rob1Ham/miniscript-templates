@@ -51,7 +51,7 @@ Layer is used as an abstraction to segement the different eligible spending cond
 | 1     | Default Spending Path     | $PK_1$, $PK_2$, $PK_3$ (2 of 3)| AND                    | $PAK_1$, $PAK_2$, $PAK_3$ | N/A            | None                            |
 | 2     | Asset Recovery Path   | $PAK_1$, $PAK_2$, $PAK_3$      | AND                    | $SAK$           | AND               | After (`smallest_epoch_timestamp`) |
 | 3     | Emergency Recovery Path    | $PAK_1$, $PAK_2$, $PAK_3$ (1 of 3)| AND                 | $SAK$           | N/A               | After (`between_epoch_timestamp`)                            |
-| 4     | Sovereign Recovery Path   | $RK_1$, $RK_2$, $RK_3$, $RK_4$, $RK_5$ (3 of 5)| None | None              | AND               | After (`largest_epoch_timestamp`)  |
+| 4     | Sovereign Recovery Path   | $RK_1$, $RK_2$, $RK_3$ (2 of 3)| None | None              | AND               | After (`largest_epoch_timestamp`)  |
 
 
 
