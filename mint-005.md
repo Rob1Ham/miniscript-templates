@@ -139,11 +139,14 @@ AND
 For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, midnight gmt), the `between_epoch_timestamp` is: 1673740800 and `largest_epoch_timestamp` is: 1675209600 (Feb 1 2023, midnight gmt)
 
 - MINT-005 Output Descriptor: 
-<code>wsh(or_i(and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`largest_epoch_timestamp`)),and_v(v:thresh(2,pk($PAK_1$),s:pk($PAK_2$),s:pk($PAK_3$),snl:after(`between_epoch_timestamp`)),or_d(multi(2,$PK_1$,$PK_2$,$PK_3$),and_v(v:pkh($SAK$),after(`smallest_epoch_timestamp`))))))</code>
+<code>wsh(andor(multi(2,$PAK_1$,$PAK_2$,$PAK_3$),or_i(and_v(v:pkh($SAK$),after(`between_epoch_timestamp`)),thresh(2,pk($PK_1$),s:pk($PK_2$),s:pk($PK_3$),snl:after(`smallest_epoch_timestamp`))),and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`larget_epoch_timestamp`))))</code>
 
 
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
-<code>or(99@and(thresh(2,pk($PAK_1$),pk($PAK_2$),pk($PAK_3$),after(`between_epoch_timestamp`)),or(99@thresh(2,pk($PK_1$),pk($PK_2$),pk($PK_3$)),and(pk($SAK$),after(`smallest_epoch_timestamp`)))),and(thresh(2,pk(Recovery1),pk(Recovery2),pk(Recovery3)),after(`largest_epoch_timestamp`)))</code>
+<code>"or(99@and(thresh(2,pk($PAK_1$),pk($PAK_2$),pk($PAK_3$)),or(99@thresh(2,pk($PK_1$),pk($PK_2$),pk($PK_3$),after(`smallest_epoch_timestamp`)),and(pk($SAK$),after(`between_epoch_timestamp`)))),and(thresh(2,pk($RK_1$),pk($RK_2$),pk($RK_3)),after(`largest_epoch_timestamp`)))"</code>
+
+
+
 
 
 ## Layer 1 Example Spend
@@ -151,23 +154,23 @@ For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, mid
 Signed by: $PK_1$, $PK_2$, $PAK_1$, $PAK_2$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/fd6c7da5c6febee5f41a9ce163e9be152d942e66755f9a9b2e4e86954d66aa13)
+Transaction](https://mempool.space/signet/tx/1e2e6ca3f2202831f8327c091c61d7820d5a01715b6a474e9f51cbc4d5c96483)
 
 ## Layer 2 Example Spend 
 
 Signed by: $PK_1$, $PK_2$, $SAK$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/312325147d5f7721900c51e80d7d216cbe5205591b5fd737f1aab22f95d4dfbe)
+Transaction](https://mempool.space/signet/tx/49be43f48fb9d33325061db393afe68cf55420f53c73aac2ae9bc943b183a1c1)
 
 ## Layer 3 Example Spend
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/3bb995a053c8f82740b6f2d824c6bb0d34c5af5bfa0d68940151eba111db2284)
+Transaction](https://mempool.space/signet/tx/ff947baf19451761a713daf257d160c8195adfa2e6f56cd7e3b674e837335417)
 
 ## Layer 4 Example Spend
 
 Signed by: $RK_1$, $RK_2$
 
 [Reference Testnet
-Transaction](https://mempool.space/testnet/tx/e10e6e3b1469caa2caf1408669e2b85bca39e3445ff3de657bdc93a8ea195462)
+Transaction](https://mempool.space/signet/tx/6b53c5a2c314a9c2b6516f78af984a21c235f985f8ec483b9750d47382e5aec5)
