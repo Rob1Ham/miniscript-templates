@@ -4,15 +4,15 @@
 
 ## Motivation
 
-To provide a custody arrangement in which an owner of Bitcoin (principle) is able to secure bitcoin by working with an Agent. Unlike existing models up to this point, ***where bitcoin either by the principle as a custodian, or share keys within a multisig threshold,** The goal here is to have the default requirements of bitcoin held in this joint custody to require both a threshold of keys from the Agent & Principle for movement of funds.
+To provide a custody arrangement in which an owner of Bitcoin (principal) is able to secure bitcoin by working with an Agent. Unlike existing models up to this point, ***where bitcoin either by the principal as a custodian, or share keys within a multisig threshold,** The goal here is to have the default requirements of bitcoin held in this joint custody to require both a threshold of keys from the Agent & principal for movement of funds.
 
-This introduces a concept of "Negative Control" where, by default, funds are not able to be moved unless both the Principle and Agent sign the transaction.
+This introduces a concept of "Negative Control" where, by default, funds are not able to be moved unless both the Principal and Agent sign the transaction.
 
-In the event the principle loses access to all of their keys, a secondary agent is available to work with the primary agent such that funds can be recovered after a set period of time.
+In the event the principal loses access to all of their keys, a secondary agent is available to work with the primary agent such that funds can be recovered after a set period of time.
 
 In the unlikely event the Primary agent has lost 2 of their 3 keys, a timelock enables only 1 of 3 keys from the primary agent to be signed with the secondary agent.
 
-Finally, in the event the principle no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the principle, or their own delegated managers of the recovery keys.
+Finally, in the event the principal no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the principal, or their own delegated managers of the recovery keys.
 
 
 
@@ -20,13 +20,13 @@ Finally, in the event the principle no longer wishes to work with the agent, say
 
 - There are three timelocks used for this MinT, in increasing order:
 
-1. `Contingency Timestamp` - This timestamp is the smallest timestamp, and expires first. It acts as a contingency to allow the Principle to sign for their quorum with only 1 of 3 possible keys. This is done in the event two principle keys are lost/destroyed/stolen. The passing of this timestamp enables "Layer 2" to be used.
+1. `Contingency Timestamp` - This timestamp is the smallest timestamp, and expires first. It acts as a contingency to allow the Principal to sign for their quorum with only 1 of 3 possible keys. This is done in the event two principal keys are lost/destroyed/stolen. The passing of this timestamp enables "Layer 2" to be used.
 
 2. `Recovery Timestamp` - In the event the pricniple has lost all of their keys, the agent and secnondary agent are able to recoery funds. The passing of this timestamp enables "Layer 3" also known as the "Recovery Layer".
 
 3. `Catastrophe Timestamp` - In the unlikely event the primary agent loses two of their keys, the passing of the catastrophe timestamp enables the primary agent to use one key with the secondary agent to spend the bitcoin. The passing of this timestamp enables "Layer 4" also known as the "Cataostrophe Layer"
 
-4. `Sovereign Timestamp` - The greatest valued timelock, signifying the expiration of the contract with the agent. The principle is able to unilaterally withdraw their bitcoin from the joint custody vault. The passing of this timestamp enables "Layer 5" also known as the "Soverig Layer"
+4. `Sovereign Timestamp` - The greatest valued timelock, signifying the expiration of the contract with the agent. The principal is able to unilaterally withdraw their bitcoin from the joint custody vault. The passing of this timestamp enables "Layer 5" also known as the "Soverig Layer"
 
 ### Keys
 
@@ -34,10 +34,10 @@ In total, there are 10 keys in use for the 3 Key Joint Custody Vault, they are a
 
 | Key Names| Description | Key Abbreviations|
 |:--|:--:|:--:|
-|Principle Keys 1,2,3 |These keys belong to the owner of the Bitcoin. They are used as the default keys the principle uses to transact bitcoin for the length of the relationship with the agent in the Joint Custody vault. | $PK_1$, $PK_2$, $PK_3$|
-|Primary Agent Keys 1,2,3 |These keys belong to the agent, who the principle has engaged with to fascilitate the securing of Bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$|
-|Secondary Agent Key |This key is held by a 3rd party unassoicated with the other keys, in the event the principle has lost a majority of their keys, can sign transactions with the primary agent to move funds after a designated "Recovery Period" has started. | $SAK$ |
-|Recovery Keys 1,2,3 |These keys in practice belong to the principle, they may even be keys related to the Principle Keys with a different derivation path, but can also be delegated key holders. After the initial joint custody vault agreement has ended, and the Recovery Period has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
+|Principal Keys 1,2,3 |These keys belong to the owner of the Bitcoin. They are used as the default keys the principal uses to transact bitcoin for the length of the relationship with the agent in the Joint Custody vault. | $PK_1$, $PK_2$, $PK_3$|
+|Primary Agent Keys 1,2,3 |These keys belong to the agent, who the principal has engaged with to fascilitate the securing of Bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$|
+|Secondary Agent Key |This key is held by a 3rd party unassoicated with the other keys, in the event the principal has lost a majority of their keys, can sign transactions with the primary agent to move funds after a designated "Recovery Period" has started. | $SAK$ |
+|Recovery Keys 1,2,3 |These keys in practice belong to the principal, they may even be keys related to the Principal Keys with a different derivation path, but can also be delegated key holders. After the initial joint custody vault agreement has ended, and the Recovery Period has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
 
 
 Below is a reference diagram on how the 3 Key Joint Custody operates across time:
@@ -51,11 +51,11 @@ Layer is used as an abstraction to segement the different eligible spending cond
 | Layer Number | Layer Name                 | Required Signatures          | Timestamp Requirement | Description                                                                                                      |
 |:------------:|----------------------------|:----------------------------:|:---------------------:|------------------------------------------------------------------------------------------------------------------|
 | 1            | Default Path               | 2 of 3 $PK$ **and** 2 of 3 $PAK$ | None                  | Allows transactions under normal conditions without any timelock constraints.                                    |
-| 2            | Contingency Path           | 1 of 3 $PK$ **and** 2 of 3 $PAK$ | Contingency Timestamp | Activated after the contingency timestamp is reached, allowing for fewer Principle Keys in the signing process.  |
+| 2            | Contingency Path           | 1 of 3 $PK$ **and** 2 of 3 $PAK$ | Contingency Timestamp | Activated after the contingency timestamp is reached, allowing for fewer Principal Keys in the signing process.  |
 | 3            | Recovery Path              | 2 of 3 $PAK$ **and** $SAK$    | Recovery Timestamp    | Allows for recovery procedure once the recovery timestamp has passed, requiring signatures from the Primary Agent Keys and the Secondary Agent Key. |
-| 4A           | Catastrophe Path           | 1 of 3 $PAK$ **and** $SAK$ | Catastrophe Timestamp | In the event of a catastrophe, require only 1 Principle Agent Key and Secondary Agent Key.                        |
+| 4A           | Catastrophe Path           | 1 of 3 $PAK$ **and** $SAK$ | Catastrophe Timestamp | In the event of a catastrophe, require only 1 Principal Agent Key and Secondary Agent Key.                        |
 | 4B           | Enhanced Catastrophe Path  | 1 of 3 $PAK$ **and** 1 of 3 $PK$ | Contingency Timestamp **and** Catastrophe Timestamp | Requires satisfaction of both the Contingency and Catastrophe Timestamps, enabling transactions with reduced key requirements in enhanced catastrophic conditions. |
-| 5            | Sovereign Path             | 2 of 3 $RK$                  | Sovereign Timestamp    | Marks the contract's expiration, allowing the Principle to unilaterally withdraw their bitcoin from the vault with Recovery Keys.
+| 5            | Sovereign Path             | 2 of 3 $RK$                  | Sovereign Timestamp    | Marks the contract's expiration, allowing the Principal to unilaterally withdraw their bitcoin from the vault with Recovery Keys.
 
 
 
