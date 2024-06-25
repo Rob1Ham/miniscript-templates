@@ -38,7 +38,7 @@ In total, there are 10 keys in use for the 3 Key Joint Custody Vault, they are a
 |Recovery Keys 1,2,3 |These keys in practice belong to the principle, they may even be keys related to the Principle Keys with a different derivation path, but can also be delegated key holders. After the initial Joint Custody vault agreement has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
 
 
-Below is a reference diagram on how the 3 Key Joint Custody operates across time:
+Below are reference diagrams on how the 3 Key Joint Custody operates across time:
 
 ---
 
