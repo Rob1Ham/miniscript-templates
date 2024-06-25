@@ -18,11 +18,9 @@ Finally, in the event the principle no longer wishes to work with the agent, say
 
 ### More on Timelock Values
 
-- There are three timelocks used for this MinT:
+There are three timelocks used for this MinT:
 
 1. `smallest_epoch_timestamp` - The smallest epoch timestamp timelock enables a "Asset Recovery" period such that only one of the principle keys is required to sign.
-
- is to signify the "recovery period" where the Principle has lost access to 2 of their keys, and would like to use the secondary agent as a recovery partner to gain access to the funds.
 
 2. `between_epoch_timestamp` - The epoch timestamp value in between the smallest and largest epoch timestamp enables a "Emergency Recover Path". In the event the Principle has lost all of their keys, the Primary agent and Secondary Agent can work together to recover the Bitcoin in the Joint Custody vault.
 
