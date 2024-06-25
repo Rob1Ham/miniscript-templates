@@ -76,14 +76,6 @@ Layer is used as an abstraction to segement the different eligible spending cond
 | Scenario 8        | ✅      |        | ✅      | ✅       |         | ✅       |
 | Scenario 9        |        | ✅      | ✅      | ✅       |         | ✅       |
 
-AND
-
-| Valid Spending Scenario | $PAK_1$ | $PAK_2$ | $PAK_3$ |
-|:-----------------------:|:-------:|:-------:|:-------:|
-| Scenario A              | ✅       | ✅       |         |
-| Scenario B              | ✅       |         | ✅       |
-| Scenario C              |         | ✅       | ✅       |
-
 
 #### Layer 2
 
@@ -95,27 +87,32 @@ AND
 
 ##### Valid Layer 2 Spend Conditions
 
-| Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `smallest_epoch_timestamp` |
-|-------------------|:--------:|:--------:|:--------:|:--------:|:------------:|
-| Scenario 1        | ✅        | ✅        |         | ✅        | ✅          | 
-| Scenario 2        | ✅        |          | ✅        | ✅        | ✅          |
-| Scenario 3        |          | ✅        | ✅        | ✅        | ✅          |
-
+| Spending Scenario | PK_1 | PK_2 | PK_3 | PAK_1 | PAK_2 | PAK_3 | BIP-113 greater than (smallest_epoch_timestamp) |
+|-------------------|:----:|:----:|:----:|:-----:|:-----:|:-----:|:-----------------------------------:|
+| Scenario 10       | ✅    |      |      | ✅     | ✅     |       | ✅                                   |
+| Scenario 11       | ✅    |      |      | ✅     |       | ✅     | ✅                                   |
+| Scenario 12       | ✅    |      |      |       | ✅     | ✅     | ✅                                   |
+| Scenario 13       |      | ✅    |      | ✅     | ✅     |       | ✅                                   |
+| Scenario 14       |      | ✅    |      | ✅     |       | ✅     | ✅                                   |
+| Scenario 15       |      | ✅    |      |       | ✅     | ✅     | ✅                                   |
+| Scenario 16       |      |      | ✅    | ✅     | ✅     |       | ✅                                   |
+| Scenario 17       |      |      | ✅    | ✅     |       | ✅     | ✅                                   |
+| Scenario 18       |      |      | ✅    |       | ✅     | ✅     | ✅                                   |
 
 #### Layer 3:
 
 | Emergency Recovery Path | $PAK_1$ | $PAK_2$ | $PAK_3$ | $SAK$ | BIP-113 greater than `between_epoch_timestamp` |
 |:-----------------------:|:-------:|:-------:|:-------:|:-------:|:-----------------------------------------------:|
-| 1 of 3 PAKs AND SAK1 after Timelock | ![PAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![SAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
+| 2 of 3 PAKs AND SAK1 after Timelock | ![PAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK2](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![PAK3](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![SAK1](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/key.png) | ![Timelock](https://raw.githubusercontent.com/bitcoincore-dev/miniscript-templates/main/assets/unlock.png) |
 
 
 ##### Valid Layer 3 Spend Conditions
 
-| Spending Scenario | $_PAK_1$ | $_PAK_2$ | $_PAK_3$ | $_SAK_1$ | BIP-113 greater than `between_epoch_timestamp` |
-|-------------------|:--------:|:--------:|:--------:|:--------:|:----------------------------------------------:|
-| Scenario 1        | ✅        |          |          | ✅        | ✅                                            | 
-| Scenario 2        |          | ✅        |          | ✅        | ✅                                            |
-| Scenario 3        |          |          | ✅        | ✅        | ✅                                            |
+| Spending Scenario | PAK_1 | PAK_2 | PAK_3 | SAK | BIP-113 time greater than  (between_epoch_timestamp) |
+|-------------------|:-----:|:-----:|:-----:|:---:|:----------------------------------:|
+| Scenario 19       | ✅     | ✅     |       | ✅  | ✅                                  |
+| Scenario 20       | ✅     |       | ✅     | ✅  | ✅                                  |
+| Scenario 21       |       | ✅     | ✅     | ✅  | ✅                                  |                                |
 
 
 #### Layer 4:
@@ -125,11 +122,11 @@ AND
 
 ##### Valid Layer 4 Spend Conditions
 
-| Spending Scenario | $RK_1$ | $RK_2$ | $RK_3$ | Network BIP-113 time greater than `largest_epoch_timestamp` |
-|-------------------|:------:|:------:|:------:|:------------:|
-| Scenario 1        | ✅      | ✅      |        | ✅          |
-| Scenario 2        | ✅      |        | ✅      | ✅          |
-| Scenario 3        |        | ✅      | ✅      | ✅          |
+| Spending Scenario | RK_1 | RK_2 | RK_3 | Timelock (largest_epoch_timestamp) |
+|-------------------|:----:|:----:|:----:|:----------------------------------:|
+| Scenario 22       | ✅    | ✅    |      | ✅                                  |
+| Scenario 23       | ✅    |      | ✅    | ✅                                  |
+| Scenario 24       |      | ✅    | ✅    | ✅                                  |
 
 
 ---
