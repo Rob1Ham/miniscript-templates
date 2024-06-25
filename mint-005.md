@@ -4,15 +4,15 @@
 
 ## Motivation
 
-To provide a custody arrangement in which an owner of Bitcoin (principle) is able to secure bitcoin by working with an Agent. Unlike existing models up to this point, ***where bitcoin either by the principle as a custodian, or share keys within a multisig threshold,** The goal here is to have the default requirements of bitcoin held in this joint custody to require both a threshold of keys from the Agent & Principle for movement of funds.
+To provide a custody arrangement in which an owner of Bitcoin (principle) is able to secure bitcoin by working with an Agent. Unlike existing collaborative custody models up to this point, **where bitcoin keys WITHIN a multisig threshold are shared between principles and agents**, a joint custody model by default requires a threshold of keys by both the Agent & Principle for movement of funds.
 
 This introduces a concept of "Negative Control" where, by default, funds are not able to be moved unless both the Principle and Agent sign the transaction.
 
 In the event the principle loses access to all of their keys, a secondary agent is available to work with the primary agent such that funds can be recovered after a set period of time.
 
-In the unlikely event the Primary agent has lost 2 of their 3 keys, a timelock enables only 1 of 3 keys from the primary agent to be signed with the secondary agent.
+In the unlikely event the Primary agent has lost 2 of their 3 keys, a timelock enabled threshold allows  only 1 of 3 keys from the primary agent to be signed with the secondary agent.
 
-Finally, in the event the principle no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the principle, or their own delegated managers of the recovery keys.
+Finally, in the event the principle no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the principle, or their own delegated managers of the recovery keys. As a result, when enough time has passed, the Principle is able to move Bitcoin unilaterally without having the Agent sign key material.
 
 
 
@@ -20,11 +20,13 @@ Finally, in the event the principle no longer wishes to work with the agent, say
 
 - There are three timelocks used for this MinT:
 
-1. `smallest_epoch_timestamp` - The lower valued timelock is to signify the "recovery period" where the principle has lost access to 2 of their keys, and would like to use the secondary agent as a recovery partner to gain access to the funds.
+1. `smallest_epoch_timestamp` - The smallest epoch timestamp timelock enables a "Asset Recovery" period such that only one of the principle keys is required to sign.
 
-2. `between_epoch_timestamp` - In between the two timestamps, this timestamp enables the difference between Layer 2 recovery layer and layer 3 recovery layer.
+ is to signify the "recovery period" where the Principle has lost access to 2 of their keys, and would like to use the secondary agent as a recovery partner to gain access to the funds.
 
-3. `largest_epoch_timestamp` - The greater valued timelock, signifying the expiration of the contract, where the principle is able to unilaterally withdraw their bitcoin from the joint custody vault.
+2. `between_epoch_timestamp` - The epoch timestamp value in between the smallest and largest epoch timestamp enables a "Emergency Recover Path". In the event the Principle has lost all of their keys, the Primary agent and Secondary Agent can work together to recover the Bitcoin in the Joint Custody vault.
+
+3. `largest_epoch_timestamp` - The largest epoch timestamp, signifying the expiration of the contract, where the principle is able to unilaterally withdraw their bitcoin from the joint custody vault.
 
 ### Keys
 
@@ -35,7 +37,7 @@ In total, there are 10 keys in use for the 3 Key Joint Custody Vault, they are a
 |Principle Keys 1,2,3 |These keys belong to the owner of the Bitcoin. They are used as the default keys the principle uses to transact bitcoin for the length of the relationship with the agent in the Joint Custody vault. | $PK_1$, $PK_2$, $PK_3$|
 |Primary Agent Keys 1,2,3 |These keys belong to the agent, who the principle has engaged with to fascilitate the securing of Bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$|
 |Secondary Agent Key |This key is held by a 3rd party unassoicated with the other keys, in the event the principle has lost a majority of their keys, can sign transactions with the primary agent to move funds after a designated "Recovery Period" has started. | $SAK$ |
-|Recovery Keys 1,2,3 |These keys in practice belong to the principle, they may even be keys related to the Principle Keys with a different derivation path, but can also be delegated key holders. After the initial joint custody vault agreement has ended, and the Recovery Period has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
+|Recovery Keys 1,2,3 |These keys in practice belong to the principle, they may even be keys related to the Principle Keys with a different derivation path, but can also be delegated key holders. After the initial Joint Custody vault agreement has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ |
 
 
 Below is a reference diagram on how the 3 Key Joint Custody operates across time:
