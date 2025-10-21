@@ -8,9 +8,9 @@ To provide a custody arrangement in which an owner of bitcoin (Principal) is abl
 
 This introduces a concept of "Negative Control" where, by default, funds are not able to be moved unless both the Principal and Agent sign the transaction.
 
-In the event the Principal loses access to all of their keys, a secondary agent is available to work with the Primary Agent such that funds can be recovered after a set period of time.
+In the event the Principal loses access to all of their keys, a Secondary Agent is available to work with the Primary Agent such that funds can be recovered after a set period of time.
 
-In the unlikely event the Primary Agent has lost 2 of their 3 keys, a timelock enabled threshold allows  only 1 of 3 keys from the Primary Agent to be signed with the secondary agent.
+In the unlikely event the Principal has lost 2 of their 3 keys, a timelock enabled threshold allows only 1 of 3 Principal keys to be signed (instead of 2), while still requiring the Primary Agent's 2-of-3 signature.
 
 Finally, in the event the Principal no longer wishes to work with the agent, say after a contract expires, the custody defers to a set of recovery keys, which can be held either by the Principal, or their own delegated managers of the recovery keys. As a result, when enough time has passed, the Principal is able to move bitcoin unilaterally without having the Agent sign key material.
 
@@ -18,9 +18,9 @@ Finally, in the event the Principal no longer wishes to work with the agent, say
 
 There are three timelocks used for this MinT:
 
-1. `smallest_epoch_timestamp` - The smallest epoch timestamp timelock enables a "Asset Recovery" period such that only one of the Principal keys is required to sign.
+1. `smallest_epoch_timestamp` - The smallest epoch timestamp timelock enables an "Asset Recovery" period such that only one of the Principal keys is required to sign.
 
-2. `between_epoch_timestamp` - The epoch timestamp value in between the smallest and largest epoch timestamp enables a "Emergency Recovery Path". In the event the Principal has lost all of their keys, the Primary Agent and Secondary Agent can work together to recover the bitcoin in the Joint Custody vault.
+2. `between_epoch_timestamp` - The epoch timestamp value in between the smallest and largest epoch timestamp enables an "Emergency Recovery Path". In the event the Principal has lost all of their keys, the Primary Agent and Secondary Agent can work together to recover the bitcoin in the Joint Custody vault.
 
 3. `largest_epoch_timestamp` - The largest epoch timestamp, signifying the expiration of the contract, where the Principal is able to unilaterally withdraw their bitcoin from the joint custody vault.
 
@@ -31,8 +31,8 @@ In total, there are 10 keys in use for the 3 Key Joint Custody Vault, they are a
 | Key Names | Description | Key Abbreviations | Key Symbol |
 |:--|:--:|:--:|:--:|
 |Principal Keys 1,2,3 | These keys belong to the owner of the bitcoin. They are used as the default keys the Principal uses to transact bitcoin for the length of the relationship with the agent in the Joint Custody vault. | $PK_1$, $PK_2$, $PK_3$ | <div align="center"> ![Blue Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png) </div> |
-|Primary Agent Keys 1,2,3 | These keys belong to the agent, who the Principal has engaged with to fascilitate the securing of bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$ | <div align="center"> ![Green Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png) </div> |
-|Secondary Agent Key | This key is held by a 3rd party unassoicated with the other keys, in the event the Principal has lost a majority of their keys, can sign transactions with the Primary Agent to move funds after a designated "Recovery Period" has started. | $SAK$ | <div align="center"> ![Red Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/83a8c241b2c2cf7ee940570aa97d8b0e1d751f55/assets/key_red.png) </div> |
+|Primary Agent Keys 1,2,3 | These keys belong to the agent, who the Principal has engaged with to facilitate the securing of bitcoin for a determined set of time. | $PAK_1$, $PAK_2$, $PAK_3$ | <div align="center"> ![Green Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png) </div> |
+|Secondary Agent Key | This key is held by a 3rd party unassociated with the other keys, in the event the Principal has lost a majority of their keys, can sign transactions with the Primary Agent to move funds after a designated "Recovery Period" has started. | $SAK$ | <div align="center"> ![Red Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/83a8c241b2c2cf7ee940570aa97d8b0e1d751f55/assets/key_red.png) </div> |
 |Recovery Keys 1,2,3 | These keys in practice belong to the Principal, they may even be keys related to the Principal Keys with a different derivation path, but can also be delegated key holders. After the initial Joint Custody vault agreement has ended, the recovery keys can unilaterally be used to withdraw money from the vault. | $RK_1$, $RK_2$, $RK_3$ | <div align="center"> ![Gray Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_gray.png) </div> |
 
 
@@ -43,13 +43,13 @@ Below are reference diagrams on how the 3 Key Joint Custody operates across time
 
 ### Joint Custody Summary Layers
 
-Layer is used as an abstraction to segement the different eligible spending conditions, going in an ascending order of timelock values. At the start, only "Layer 1" is accessible for spending funds, over time, other spending conditions become available, but this does not restrict the ability to spend from a proceeding layer.
+Layer is used as an abstraction to segment the different eligible spending conditions, going in an ascending order of timelock values. At the start, only "Layer 1" is accessible for spending funds, over time, other spending conditions become available, but this does not restrict the ability to spend from a preceding layer.
 
 | Layer | Layer Name                | Key Set 1                      | Condition Between Sets | Key Set 2          | Timelock Condition | Timelock                        |
 |:-----:|:-------------------------:|:------------------------------:|:----------------------:|:------------------:|:------------------:|:-------------------------------:|
 | 1     | Default Spending Path     | $PK_1$, $PK_2$, $PK_3$ (2 of 3)| AND                    | $PAK_1$, $PAK_2$, $PAK_3$ (2 of 3)| N/A            | None                            |
 | 2     | Asset Recovery Path   | $PK_1$, $PK_2$, $PK_3$ (1 of 3)     | AND                    | $PAK_1$, $PAK_2$, $PAK_3$  (2 of 3)         | AND               | After (`smallest_epoch_timestamp`) |
-| 3     | Emergency Recovery Path    | $PAK_1$, $PAK_2$, $PAK_3$ (2 of 3)| AND                 | $SAK$           | N/A               | After (`between_epoch_timestamp`)                            |
+| 3     | Emergency Recovery Path    | $PAK_1$, $PAK_2$, $PAK_3$ (2 of 3)| AND                 | $SAK$           | AND               | After (`between_epoch_timestamp`)                            |
 | 4     | Sovereign Recovery Path   | $RK_1$, $RK_2$, $RK_3$ (2 of 3)| None | None              | AND               | After (`largest_epoch_timestamp`)  |
 
 ### Layer 1
@@ -205,7 +205,7 @@ Layer is used as an abstraction to segement the different eligible spending cond
 For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, midnight gmt), the `between_epoch_timestamp` is: 1673740800 and `largest_epoch_timestamp` is: 1675209600 (Feb 1 2023, midnight gmt)
 
 - MINT-005 Output Descriptor:
-<code>wsh(andor(multi(2,$PAK_1$,$PAK_2$,$PAK_3$),or_i(and_v(v:pkh($SAK$),after(`between_epoch_timestamp`)),thresh(2,pk($PK_1$),s:pk($PK_2$),s:pk($PK_3$),snl:after(`smallest_epoch_timestamp`))),and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`larget_epoch_timestamp`))))</code>
+<code>wsh(andor(multi(2,$PAK_1$,$PAK_2$,$PAK_3$),or_i(and_v(v:pkh($SAK$),after(`between_epoch_timestamp`)),thresh(2,pk($PK_1$),s:pk($PK_2$),s:pk($PK_3$),snl:after(`smallest_epoch_timestamp`))),and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`largest_epoch_timestamp`))))</code>
 
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
 <code>"or(99@and(thresh(2,pk($PAK_1$),pk($PAK_2$),pk($PAK_3$)),or(99@thresh(2,pk($PK_1$),pk($PK_2$),pk($PK_3$),after(`smallest_epoch_timestamp`)),and(pk($SAK$),after(`between_epoch_timestamp`)))),and(thresh(2,pk($RK_1$),pk($RK_2$),pk($RK_3)),after(`largest_epoch_timestamp`)))"</code>
