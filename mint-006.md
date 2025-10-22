@@ -82,7 +82,7 @@ Layer is used as an abstraction to segment the different eligible spending condi
 | Scenario 5        | ✅      |        | ✅      | ✅      |        | ✅      |
 | Scenario 6        | ✅      |        | ✅      |        | ✅      | ✅      |
 | Scenario 7        |        | ✅      | ✅      | ✅      | ✅      |        |
-| Scenario 9        |        | ✅      | ✅      | ✅      |        | ✅      |
+| Scenario 8        |        | ✅      | ✅      | ✅      |        | ✅      |
 | Scenario 9        |        | ✅      | ✅      |        | ✅      | ✅      |
 
 
