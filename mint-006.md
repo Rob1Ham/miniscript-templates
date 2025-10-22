@@ -76,13 +76,13 @@ Layer is used as an abstraction to segment the different eligible spending condi
 | Spending Scenario | $PAK_1$ | $PAK_2$ | $PAK_3$ | $PK_1$ | $PK_2$ | $PK_3$ |
 |-------------------|:------:|:------:|:------:|:------:|:------:|:------:|
 | Scenario 1        | ✅      | ✅      |        | ✅      | ✅      |        |
-| Scenario 2        | ✅      |        | ✅      | ✅      | ✅      |        |
-| Scenario 3        | ✅      | ✅      |        | ✅      |        | ✅      |
-| Scenario 4        |        | ✅      | ✅      | ✅      | ✅      |        |
+| Scenario 2        | ✅      | ✅      |        | ✅      |        | ✅      |
+| Scenario 3        | ✅      | ✅      |        |        | ✅      | ✅      |
+| Scenario 4        | ✅      |        | ✅      | ✅      | ✅      |        |
 | Scenario 5        | ✅      |        | ✅      | ✅      |        | ✅      |
-| Scenario 6        |        | ✅      | ✅      | ✅      |        | ✅      |
-| Scenario 7        | ✅      | ✅      |        |        | ✅      | ✅      |
-| Scenario 8        | ✅      |        | ✅      |        | ✅      | ✅      |
+| Scenario 6        | ✅      |        | ✅      |        | ✅      | ✅      |
+| Scenario 7        |        | ✅      | ✅      | ✅      | ✅      |        |
+| Scenario 9        |        | ✅      | ✅      | ✅      |        | ✅      |
 | Scenario 9        |        | ✅      | ✅      |        | ✅      | ✅      |
 
 
