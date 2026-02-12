@@ -6,6 +6,8 @@
 
 This vault is very similar to [mint-005.md](mint-005.md). The difference is the sequential order of the 3rd and 4th "layers", where the Principal is able to unilaterally move funds prior to the recovery layer. This is done for users who wish to make sure that funds will require the Principal to sign before the Primary Agent and Secondary Agent are able to move funds unilaterally. The recovery layer still exists to provide support to recover funds in the event the Principal has lost access to their keys.
 
+**Key differences from MINT-005:** First, the layer ordering is changed — the Sovereign Recovery Path (Recovery Keys only) comes *before* the Emergency Recovery Path (Primary Agent + Secondary Agent), meaning the Principal can unilaterally move funds before the agents gain the ability to recover without the Principal. Second, the Primary Agent Keys (PAKs) are listed as Key Set 1 and the Principal Keys (PKs) as Key Set 2 in the summary table and layer diagrams, which is the reverse of MINT-005's column ordering. Together, these changes result in a different miniscript output descriptor.
+
 
 ### More on Timelock Values
 
@@ -19,7 +21,7 @@ There are three timelocks used for this MinT:
 
 ### Keys
 
-In total, there are 10 keys in use for the 10-Key Collaborative Custody Vault, they are as follows:
+In total, there are 10 keys in use for the 3 Key Joint Custody, Sovereign First Vault, they are as follows:
 
 | Key Names | Description | Key Abbreviations | Key Symbol |
 |:--|:--:|:--:|:--:|
@@ -30,11 +32,11 @@ In total, there are 10 keys in use for the 10-Key Collaborative Custody Vault, t
 
 
 
-Below are reference diagrams on how the 10-Key Collaborative Custody Vault operates across time:
+Below are reference diagrams on how the 3 Key Joint Custody, Sovereign First Vault operates across time:
 
 ---
 
-### Collaborative Custody Summary Layers
+### Joint Custody Summary Layers
 
 Layer is used as an abstraction to segment the different eligible spending conditions, going in an ascending order of timelock values. At the start, only "Layer 1" is accessible for spending funds, over time, other spending conditions become available, but this does not restrict the ability to spend from a preceding layer.
 
@@ -63,9 +65,9 @@ Layer is used as an abstraction to segment the different eligible spending condi
   </tr>
   <tr>
     <td align="center">2 of 3 PAKs AND 2 of 3 PKs</td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK1"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK2"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK3"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK1"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK2"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK3"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK1"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK2"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK3"></td>
@@ -106,9 +108,9 @@ Layer is used as an abstraction to segment the different eligible spending condi
   </tr>
   <tr>
     <td align="center">2 of 3 PAKs AND 1 of 3 PKs AND BIP-113 time is greater than <code>`smallest_epoch_timestamp`</code></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK1"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK2"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK3"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK1"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK2"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK3"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK1"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK2"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png" alt="PK3"></td>
@@ -178,9 +180,9 @@ Layer is used as an abstraction to segment the different eligible spending condi
   </tr>
   <tr>
     <td align="center">2 of 3 PAKs AND SAK AND after BIP-113 time is greater than <code>`largest_epoch_timestamp`</code></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK1"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK2"></td>
-    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="CK3"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK1"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK2"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png" alt="PAK3"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/83a8c241b2c2cf7ee940570aa97d8b0e1d751f55/assets/key_red.png" alt="SAK"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/unlock.png" alt="Timelock"></td>
   </tr>

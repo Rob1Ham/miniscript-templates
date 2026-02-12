@@ -218,7 +218,7 @@ Signed by: $PK_1$, $PK_2$, $PAK_1$, $PAK_2$
 Transaction](https://mempool.space/signet/tx/2836d6af6b5c4bb01e926391f64771fb333193676040b24d4236ba0bb89a7008)
 
 ## Layer 2 Example Spend
-Signed by: $PK_1$, $PK_2$, $SAK$
+Signed by: $PK_1$, $PAK_1$, $PAK_2$
 
 [Reference Testnet
 Transaction](https://mempool.space/signet/tx/36aa3dfd0c7b4f4d8c7924c411e240920e4b4d36950ca59f68098b77162ae54d)

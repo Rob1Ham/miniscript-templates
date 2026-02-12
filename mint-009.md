@@ -120,10 +120,10 @@ Layer is used as an abstraction to segment the different eligible spending condi
 For this example, the `recovery_epoch_timestamp` is: 1727740800 (October 1, 2025, midnight UTC)
 
 - MINT-009 Output Descriptor:
-<code>wsh(andor(multi(1,$CK_1$,$CK_2$),multi(2,$CSK_1$,$CSK_2$,$CSK_3$),and_v(v:multi(1,$RK_1$,$RK_2$),after(`recovery_epoch_timestamp`))))</code>
+<code>wsh(andor(multi(1,$PAK_1$,$PAK_2$),multi(2,$SAK_1$,$SAK_2$,$SAK_3$),and_v(v:multi(1,$RK_1$,$RK_2$),after(`recovery_epoch_timestamp`))))</code>
 
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
-<code>"or(and(thresh(2,pk($CSK_1$),pk($CSK_2$),pk($CSK_3$)),thresh(1,pk($CK_1$),pk($CK_2$))),and(after(`recovery_epoch_timestamp`),thresh(1,pk($RK_1$),pk($RK_2$))))"</code>
+<code>"or(and(thresh(2,pk($SAK_1$),pk($SAK_2$),pk($SAK_3$)),thresh(1,pk($PAK_1$),pk($PAK_2$))),and(after(`recovery_epoch_timestamp`),thresh(1,pk($RK_1$),pk($RK_2$))))"</code>
 
 
 
@@ -136,7 +136,7 @@ For the reference testnet transactions below, the following epoch timestamp was 
 
 ## Layer 1 Example Spend
 
-Signed by: $CK_1$, $CSK_1$, $CSK_2$
+Signed by: $PAK_1$, $SAK_1$, $SAK_2$
 
 
 [Reference Testnet Transaction](https://mempool.space/signet/tx/be2f19d0877237ec4fa900db79be2d9fdb469d60b6c6d3548da92cbef1210809)
