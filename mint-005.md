@@ -202,7 +202,7 @@ Layer is used as an abstraction to segment the different eligible spending condi
 
 ---
 # Example Miniscript Output Descriptor
-For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, midnight gmt), the `between_epoch_timestamp` is: 1673740800 and `largest_epoch_timestamp` is: 1675209600 (Feb 1 2023, midnight gmt)
+For this example, the `smallest_epoch_timestamp` is: 1753488000 (July 26, 2025 00:00:00 UTC), the `between_epoch_timestamp` is: 1766880000 (December 28, 2025 00:00:00 UTC) and `largest_epoch_timestamp` is: 1770768000 (February 11, 2026 00:00:00 UTC)
 
 - MINT-005 Output Descriptor:
 <code>wsh(andor(multi(2,$PAK_1$,$PAK_2$,$PAK_3$),or_i(and_v(v:pkh($SAK$),after(`between_epoch_timestamp`)),thresh(2,pk($PK_1$),s:pk($PK_2$),s:pk($PK_3$),snl:after(`smallest_epoch_timestamp`))),and_v(v:thresh(2,pkh($RK_1$),a:pkh($RK_2$),a:pkh($RK_3$)),after(`largest_epoch_timestamp`))))</code>
@@ -212,23 +212,21 @@ For this example, the `smallest_epoch_timestamp` is: 1672531200 (Jan 1 2023, mid
 
 ## Layer 1 Example Spend
 
-Signed by: $PK_1$, $PK_2$, $PAK_1$, $PAK_2$
+Signed by: $PK_2$, $PK_3$, $PAK_1$, $PAK_2$
 
-[Reference Testnet
-Transaction](https://mempool.space/signet/tx/2836d6af6b5c4bb01e926391f64771fb333193676040b24d4236ba0bb89a7008)
+[Reference Testnet Transaction](https://mempool.space/signet/tx/8b5d80b6b9adf6dc2d0f83372e77b81150e67689a0119348f8cbbea1121afd97)
 
 ## Layer 2 Example Spend
-Signed by: $PK_1$, $PK_2$, $SAK$
+Signed by: $PK_2$, $PAK_1$, $PAK_2$
 
-[Reference Testnet
-Transaction](https://mempool.space/signet/tx/36aa3dfd0c7b4f4d8c7924c411e240920e4b4d36950ca59f68098b77162ae54d)
+[Reference Testnet Transaction](https://mempool.space/signet/tx/07cbd89200f05dd68ade5f10f9f6e212278f7bd1dd0b494039fe99752eb10d46)
 
 ## Layer 3 Example Spend
-[Reference Testnet
-Transaction](https://mempool.space/signet/tx/bc75e9c7bd62168134a6283a56c2a0bf3c872cc6703d9566f1851309d5ef7465)
+Signed by: $PAK_1$, $PAK_2$, $SAK$
+
+[Reference Testnet Transaction](https://mempool.space/signet/tx/a10a5962098e5912887137735c39a39e921e7f9cdf65e68062aed4bd72988dc7)
 
 ## Layer 4 Example Spend
 Signed by: $RK_1$, $RK_2$
 
-[Reference Testnet
-Transaction](https://mempool.space/signet/tx/1d35568360a3a11309c77c893142a0c0cf58ed9cfce981c5492c66fb795f1872)
+[Reference Testnet Transaction](https://mempool.space/signet/tx/1de409327398bcdcb9e5bb1dc31a52a77e9567a4ce17ff794e8cb76e201833c6)
