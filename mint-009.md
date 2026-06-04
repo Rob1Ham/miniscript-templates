@@ -123,9 +123,14 @@ For this example, the `recovery_epoch_timestamp` is: 1727740800 (October 1, 2025
 <code>wsh(andor(multi(1,$PAK_1$,$PAK_2$),multi(2,$SAK_1$,$SAK_2$,$SAK_3$),and_v(v:multi(1,$RK_1$,$RK_2$),after(`recovery_epoch_timestamp`))))</code>
 
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
-<code>"or(and(thresh(2,pk($SAK_1$),pk($SAK_2$),pk($SAK_3$)),thresh(1,pk($PAK_1$),pk($PAK_2$))),and(after(`recovery_epoch_timestamp`),thresh(1,pk($RK_1$),pk($RK_2$))))"</code>
+<code>"or(and(thresh(2,pk($SAK_1$),pk($SAK_2$),pk($SAK_3$)),or(pk($PAK_1$),pk($PAK_2$))),and(after(`recovery_epoch_timestamp`),or(pk($RK_1$),pk($RK_2$))))"</code>
 
+**Note:** `thresh(1,A,B)` is semantically equivalent to `or(A,B)`. Some semantic-policy parsers, including Rust Miniscript, reject degenerate semantic thresholds where `k = 1` or `k = n` and require `or(...)` / `and(...)` instead. This is only a source-policy normalization for parser compatibility. It does not change the output descriptor or the spending semantics. The output descriptor above intentionally still uses `multi(1,...)` for 1-of-2 multisig keysets, which is valid descriptor/miniscript syntax.
 
+Spending semantics remain unchanged:
+- Default path: 1-of-2 PAK AND 2-of-3 SAK.
+- Recovery path: 1-of-2 RK AND after(`recovery_epoch_timestamp`).
+- No spend path is added or removed by changing `thresh(1,...)` to `or(...)`.
 
 ## Reference Implementation
 
