@@ -207,7 +207,7 @@ Layer is used as an abstraction to segment the different eligible spending condi
 ## Reference Implementation
 
 For the reference testnet transactions below, the following epoch timestamps were used:
-- `smallest_epoch_timestamp`: 1688000400 (June 29, 2023 00:00:00 UTC)
+- `smallest_epoch_timestamp`: 1688000400 (June 29, 2023 01:00:00 UTC)
 - `between_epoch_timestamp`: 1704067200 (January 1, 2024 00:00:00 UTC)
 - `largest_epoch_timestamp`: 1735689600 (January 1, 2025 00:00:00 UTC)
 

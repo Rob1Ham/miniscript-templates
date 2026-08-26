@@ -8,7 +8,7 @@ This vault is similar to [mint-007.md](mint-007.md), using a single Principal ke
 
 By using a single Principal key rather than a 2-of-3 multisig, this vault simplifies key management for the Principal while still maintaining robust security through the Primary Agent's 2-of-3 multisig. The vault requires both the Principal and Primary Agent to sign by default, providing strong collaborative custody.
 
-After the initial timelock expires, the Principal can move funds unilaterally. If the Principal has lost their key, the Principal can work with the Primary and Secondary Agents to recover funds after the second timelock period.
+After the initial timelock expires, the Principal can move funds unilaterally. If the Principal has lost their key, the Primary and Secondary Agents can recover funds without a Principal signature after the second timelock period.
 
 This timelock ordering, with sovereign recovery before emergency recovery, may be preferable when counter party risk is a greater concern than a principal losing their key.
 

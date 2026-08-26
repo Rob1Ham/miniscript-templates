@@ -4,24 +4,24 @@
 
 ## Motivation
 
-To provide a streamlined custody arrangement in which an owner of bitcoin (Principal) is able to secure bitcoin by working with a Primary Agent and Secondary Agent. This model introduces a **dual-agent authorization** structure where funds can only be moved when **both** the Primary Agent and Secondary Agent sign the transaction.
+To provide a streamlined custody arrangement in which an owner of bitcoin (Principal) is able to secure bitcoin by working with a Primary Agent and Secondary Agent. During the normal custody path, funds can only be moved with authorization from both the Primary Agent and Secondary Agent key groups.
 
-Unlike traditional multisig where keys are distributed equally, this model requires explicit cooperation between two distinct parties - typically a Principal's chosen service provider (Primary Agent) and a custody specialist (Secondary Agent) - before any funds can be moved.
+Unlike traditional multisig where keys are distributed equally, the normal custody path requires explicit cooperation between two distinct parties - typically a Principal's chosen service provider (Primary Agent) and a custody specialist (Secondary Agent).
 
-In the event of catastrophic key loss or after a predetermined custody period, a set of Recovery keys becomes available to move funds unilaterally, ensuring bitcoin is never permanently locked.
+After a predetermined custody period, a set of Principal-controlled Recovery Keys becomes available to move funds without either Agent. This recovery path reduces the risk of funds becoming permanently inaccessible if the normal agent path is unavailable.
 
 ### Key Characteristics
 
-- **Dual Agent Authorization**: Both Primary Agent (1-of-2) and Secondary Agent (2-of-3) must approve all transactions
-- **True Negative Control**: Neither agent can move funds without the other during normal operations
-- **Flexible Recovery**: Recovery keys can be held by the Principal, Primary Agent, Secondary Agent, or a third-party custodian
+- **Dual Agent Authorization**: The normal custody path requires both Primary Agent (1-of-2) and Secondary Agent (2-of-3) authorization
+- **True Negative Control**: Neither agent can move funds without the other through the normal custody path
+- **Principal-Controlled Recovery**: After the recovery timelock, either of the Principal's two Recovery Keys can move funds without either Agent
 - **Time-Bounded**: Recovery path activates after a specified date, allowing contract expiration
 
 ### More on Timelock Values
 
 This MinT uses a single timelock for simplification:
 
-1. `recovery_epoch_timestamp` - The recovery epoch timestamp enables a "Recovery Path" where the Primary Agent (or their designated recovery key holders) can unilaterally withdraw bitcoin after the custody agreement has expired or in emergency situations after the timelock has passed.
+1. `recovery_epoch_timestamp` - The recovery epoch timestamp enables a "Sovereign Recovery Path" where the Principal can use either Recovery Key to withdraw bitcoin without either Agent after the custody agreement has expired.
 
 ### Keys
 
@@ -31,7 +31,7 @@ In total, there are 7 keys in use for the 2 Agent Joint Custody Vault with Recov
 |:--|:--:|:--:|:--:|
 |Primary Agent Keys 1,2 | These keys belong to the Primary Agent - typically the Principal's chosen service provider (e.g., an exchange, payment processor, or financial institution). At least 1 of these 2 keys is required for any transaction during the custody period. | $PAK_1$, $PAK_2$ | <div align="center"> ![Blue Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_blue.png) </div> |
 |Secondary Agent Keys 1,2,3 | These keys belong to the Secondary Agent - typically a specialized custody provider. At least 2 of these 3 keys are required for any transaction during the custody period. This provides operational redundancy while maintaining security. | $SAK_1$, $SAK_2$, $SAK_3$ | <div align="center"> ![Green Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_green.png) </div> |
-|Recovery Keys 1,2 | These keys provide ultimate fallback control after the timelock expires. They can be held by the Principal, distributed between both agents, held by a third-party custodian, or any combination thereof. Only 1 of 2 recovery keys is needed to spend after the timelock. | $RK_1$, $RK_2$ | <div align="center"> ![Gray Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_gray.png) </div> |
+|Recovery Keys 1,2 | These keys belong to the Principal and provide sovereign fallback control after the timelock expires. Only 1 of 2 Recovery Keys is needed to spend after the timelock. | $RK_1$, $RK_2$ | <div align="center"> ![Gray Key](https://raw.githubusercontent.com/Rob1Ham/miniscript-templates/main/assets/key_gray.png) </div> |
 
 ---
 
@@ -112,12 +112,12 @@ Layer is used as an abstraction to segment the different eligible spending condi
 | Scenario 7        | ✅    |      | ✅                                  |
 | Scenario 8        |      | ✅    | ✅                                  |
 
-**Explanation**: After the recovery timelock expires (e.g., contract expiration date, emergency recovery period), either recovery key can independently spend the bitcoin. This provides ultimate protection against key loss while maintaining the dual-agent authorization requirement during the active custody period.
+**Explanation**: After the recovery timelock expires, the Principal can use either Recovery Key to spend without either Agent. The normal dual-agent path remains available, but dual-agent authorization is no longer required because the sovereign recovery path is also available.
 
 ---
 # Example Miniscript Output Descriptor
 
-For this example, the `recovery_epoch_timestamp` is: 1727740800 (October 1, 2025, midnight UTC)
+For this example, the `recovery_epoch_timestamp` is: 1727740800 (October 1, 2024, midnight UTC)
 
 - MINT-009 Output Descriptor:
 <code>wsh(andor(multi(1,$PAK_1$,$PAK_2$),multi(2,$SAK_1$,$SAK_2$,$SAK_3$),and_v(v:multi(1,$RK_1$,$RK_2$),after(`recovery_epoch_timestamp`))))</code>
@@ -125,19 +125,19 @@ For this example, the `recovery_epoch_timestamp` is: 1727740800 (October 1, 2025
 - Source Policy (FOR REFERENCE PURPOSES ONLY):
 <code>"or(and(thresh(2,pk($SAK_1$),pk($SAK_2$),pk($SAK_3$)),or(pk($PAK_1$),pk($PAK_2$))),and(after(`recovery_epoch_timestamp`),or(pk($RK_1$),pk($RK_2$))))"</code>
 
-**Note:** `thresh(1,A,B)` is semantically equivalent to `or(A,B)`. Some semantic-policy parsers, including Rust Miniscript, reject degenerate semantic thresholds where `k = 1` or `k = n` and require `or(...)` / `and(...)` instead. This is only a source-policy normalization for parser compatibility. It does not change the output descriptor or the spending semantics. The output descriptor above intentionally still uses `multi(1,...)` for 1-of-2 multisig keysets, which is valid descriptor/miniscript syntax.
+**Note:** `thresh(1,A,B)` and `or(A,B)` express the same authorization requirement. Rust Miniscript's semantic-policy parser rejects degenerate thresholds where `k = 1` or `k = n`, while its concrete-policy parser accepts `thresh(1,...)`. The normalized `or(...)` policy above is provided only as a semantic description of the spending rules. Compiling it is not guaranteed to reproduce the displayed output descriptor and may produce different script bytes, witness structure, fees, and addresses. The displayed output descriptor is authoritative and intentionally uses valid `multi(1,...)` fragments for its 1-of-2 keysets.
 
 Spending semantics remain unchanged:
 - Default path: 1-of-2 PAK AND 2-of-3 SAK.
 - Recovery path: 1-of-2 RK AND after(`recovery_epoch_timestamp`).
-- No spend path is added or removed by changing `thresh(1,...)` to `or(...)`.
+- No authorization path is added or removed by representing the 1-of-2 requirements as `or(...)` in the source policy.
 
 ## Reference Implementation
 
 **Test Network:** Bitcoin Signet
 
 For the reference testnet transactions below, the following epoch timestamp was used:
-- `recovery_epoch_timestamp`: 1727740800 (October 1, 2025 00:00:00 UTC)
+- `recovery_epoch_timestamp`: 1727740800 (October 1, 2024 00:00:00 UTC)
 
 ## Layer 1 Example Spend
 
